@@ -13,6 +13,7 @@
       --neon-pink: #ff007f;
       --bg-black: #050508;
       --border-gray: #1a1a1f;
+      --retro-red: #e63946;
     }
     body {
       background-color: var(--bg-black);
@@ -61,10 +62,31 @@
     }
     .flicker { animation: flicker 0.15s infinite; }
 
+    /* Receipt Printer Animation */
+    .receipt-paper {
+      background: #fdf0d5;
+      color: #333;
+      padding: 1rem;
+      font-family: 'VT323', monospace;
+      box-shadow: 2px 5px 15px rgba(0,0,0,0.5);
+      border-bottom: 2px dashed #ccc;
+    }
+
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: #050508; }
     ::-webkit-scrollbar-thumb { background: #1a1a1f; border-radius: 2px; }
   </style>
+<script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3",
+    "framer-motion": "https://esm.sh/framer-motion@^12.23.26",
+    "@google/genai": "https://esm.sh/@google/genai@^1.34.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/"
+  }
+}
+</script>
 </head>
 <body>
   <div class="crt-overlay"></div>
