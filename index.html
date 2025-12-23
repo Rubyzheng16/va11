@@ -17,6 +17,10 @@
     }
     body {
       background-color: var(--bg-black);
+      background-image: linear-gradient(rgba(5, 5, 8, 0.6), rgba(5, 5, 8, 0.9)), url('background.png');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
       color: var(--neon-cyan);
       font-family: 'Share Tech Mono', monospace;
       margin: 0;
@@ -26,15 +30,15 @@
     .crt-overlay {
       position: fixed;
       top: 0; left: 0; width: 100vw; height: 100vh;
-      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-                  linear-gradient(90deg, rgba(255, 0, 0, 0.04), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.04));
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
+                  linear-gradient(90deg, rgba(255, 0, 0, 0.01), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.01));
       background-size: 100% 2px, 3px 100%;
       pointer-events: none;
       z-index: 999;
     }
     .scanline {
       position: fixed;
-      top: 0; left: 0; width: 100%; height: 4px;
+      top: 0; left: 0; width: 100%; height: 2px;
       background: rgba(0, 242, 255, 0.05);
       z-index: 1000;
       pointer-events: none;
@@ -47,26 +51,26 @@
     }
     .pixel-box {
       border: 2px solid var(--border-gray);
-      background: #0a0a0f;
+      background: rgba(5, 5, 10, 0.85);
+      backdrop-filter: blur(8px);
       box-shadow: 4px 4px 0px #000;
       position: relative;
     }
-    .neon-text { text-shadow: 0 0 8px var(--neon-cyan); }
-    .neon-pink-text { text-shadow: 0 0 8px var(--neon-pink); }
+    .neon-text { text-shadow: 0 0 10px var(--neon-cyan); }
+    .neon-pink-text { text-shadow: 0 0 10px var(--neon-pink); }
     
     @keyframes flicker {
       0% { opacity: 0.98; }
-      5% { opacity: 0.95; }
+      5% { opacity: 0.92; }
       10% { opacity: 0.99; }
       100% { opacity: 1; }
     }
-    .flicker { animation: flicker 0.15s infinite; }
+    .flicker { animation: flicker 0.2s infinite; }
 
-    /* Receipt Printer Animation */
     .receipt-paper {
       background: #fdf0d5;
       color: #333;
-      padding: 1rem;
+      padding: 0.75rem;
       font-family: 'VT323', monospace;
       box-shadow: 2px 5px 15px rgba(0,0,0,0.5);
       border-bottom: 2px dashed #ccc;
