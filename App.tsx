@@ -15,15 +15,40 @@ const App: React.FC = () => {
   const [finalMix, setFinalMix] = useState<MixState | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  // 全局错误捕获
+  React.useEffect(() => {
+    const handleError = (event: ErrorEvent) => {
+      console.error('❌ 全局错误捕获:', event.error);
+      setError(`系统错误: ${event.error?.message || '未知错误'}`);
+    };
+
+    const handleUnhandledRejection = (event: PromiseRejectionEvent) => {
+      console.error('❌ 未处理的 Promise 拒绝:', event.reason);
+      setError(`异步错误: ${event.reason?.message || String(event.reason)}`);
+    };
+
+    window.addEventListener('error', handleError);
+    window.addEventListener('unhandledrejection', handleUnhandledRejection);
+
+    return () => {
+      window.removeEventListener('error', handleError);
+      window.removeEventListener('unhandledrejection', handleUnhandledRejection);
+    };
+  }, []);
+
   const handleStartAnalysis = async () => {
     if (!moodInput.trim()) return;
     setStage(GameStage.ANALYZING);
+    setError(null);
     try {
+      console.log("📝 用户输入:", moodInput);
       const generatedMenu = await generateMoodMenu(moodInput);
+      console.log("✅ 菜单生成成功:", generatedMenu);
       setMenu(generatedMenu);
       setStage(GameStage.MENU_SELECT);
     } catch (err) {
-      setError("同步失败：信号干扰。请重试。");
+      console.error("❌ 生成菜单失败:", err);
+      setError(`同步失败：信号干扰。${err instanceof Error ? err.message : '请重试。'}`);
       setStage(GameStage.MOOD_INPUT);
     }
   };
@@ -36,8 +61,59 @@ const App: React.FC = () => {
     setFinalMix(null);
   };
 
+  // 检查背景图片是否加载成功
+  React.useEffect(() => {
+    const img = new Image();
+    img.onload = () => {
+      console.log('✅ 背景图片加载成功');
+      // 确保背景图片显示
+      const bgElement = document.querySelector('[data-background-image]') as HTMLElement;
+      if (bgElement) {
+        bgElement.style.display = 'block';
+      }
+    };
+    img.onerror = (e) => {
+      console.error('❌ 背景图片加载失败，请检查 public/background.jpg 是否存在');
+      console.error('错误详情:', e);
+      // 尝试其他路径
+      const testPaths = ['/background.jpg', './background.jpg', 'background.jpg'];
+      testPaths.forEach(path => {
+        const testImg = new Image();
+        testImg.onload = () => console.log(`✅ 找到背景图片在: ${path}`);
+        testImg.src = path;
+      });
+    };
+    img.src = '/background.jpg';
+  }, []);
+
   return (
-    <div className="min-h-screen bg-[#050508] relative font-mono selection:bg-[#ff007f] selection:text-white">
+    <div className="min-h-screen relative font-mono selection:bg-[#ff007f] selection:text-white overflow-hidden">
+      {/* 背景图片层 - 最底层，确保在所有界面都显示 */}
+      <div 
+        data-background-image
+        className="fixed inset-0"
+        style={{
+          backgroundImage: 'url(/background.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          filter: 'blur(3px) brightness(0.4)', // 降低模糊度，提高亮度
+          transform: 'scale(1.05)', // 减少放大倍数
+          zIndex: 0,
+          willChange: 'transform',
+        }}
+      />
+      {/* 朦胧遮罩层 - 降低不透明度，让背景更清晰可见 */}
+      <div 
+        className="fixed inset-0"
+        style={{
+          background: 'linear-gradient(180deg, rgba(5, 5, 8, 0.3) 0%, rgba(5, 5, 8, 0.2) 50%, rgba(5, 5, 8, 0.35) 100%)',
+          backdropFilter: 'blur(0.5px)', // 减少背景模糊
+          zIndex: 1,
+        }}
+      />
+      {/* 内容层 */}
+      <div className="relative" style={{ zIndex: 10, position: 'relative' }}>
       <AnimatePresence mode="wait">
         
         {stage === GameStage.MOOD_INPUT && (
@@ -75,7 +151,22 @@ const App: React.FC = () => {
               >
                 启动情感同步
               </button>
-              {error && <p className="text-[#ff007f] text-sm uppercase font-black animate-pulse tracking-widest">{error}</p>}
+              {error && (
+                <div className="space-y-2">
+                  <p className="text-[#ff007f] text-sm uppercase font-black animate-pulse tracking-widest">{error}</p>
+                  <button
+                    onClick={() => {
+                      console.log('🔍 手动检查 API Key...');
+                      const apiKey = (process.env as any).API_KEY || (process.env as any).GEMINI_API_KEY;
+                      console.log('API Key 状态:', apiKey ? '已找到' : '未找到');
+                      console.log('API Key 值:', apiKey ? `${apiKey.substring(0, 20)}...` : 'null');
+                    }}
+                    className="text-xs text-[#00f2ff] underline hover:text-[#ff007f]"
+                  >
+                    点击检查 API Key 状态
+                  </button>
+                </div>
+              )}
             </div>
           </motion.div>
         )}
@@ -131,6 +222,7 @@ const App: React.FC = () => {
         )}
 
       </AnimatePresence>
+      </div>
     </div>
   );
 };

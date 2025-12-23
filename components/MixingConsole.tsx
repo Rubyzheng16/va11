@@ -59,7 +59,7 @@ const MixingConsole: React.FC<Props> = ({ targetRecipe, onFinish, onReset }) => 
   const totalUnits = (Object.values(mix.ingredients) as number[]).reduce((a, b) => a + b, 0);
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center p-4 bg-black/95">
+    <div className="fixed inset-0 flex items-center justify-center p-4" style={{ backgroundColor: 'transparent' }}>
       <div className="w-full max-w-5xl h-[70vh] grid grid-cols-12 gap-4">
         
         {/* Left: Recipe Menu (Rectangle) */}

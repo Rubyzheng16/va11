@@ -80,7 +80,7 @@ const RetroPrinter: React.FC<Props> = ({ targetRecipe, finalMix, onReset }) => {
   }, []);
 
   return (
-    <div className="fixed inset-0 flex flex-col items-center justify-end pb-12 overflow-hidden bg-black/40 backdrop-blur-sm">
+    <div className="fixed inset-0 flex flex-col items-center justify-end pb-12 overflow-hidden" style={{ backgroundColor: 'transparent', backdropFilter: 'blur(0.5px)' }}>
       
       {/* Background/Stack of Memos */}
       <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none">
