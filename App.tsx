@@ -36,8 +36,20 @@ const App: React.FC = () => {
     setFinalMix(null);
   };
 
+  // 背景样式定义
+  const backgroundStyle: React.CSSProperties = {
+    backgroundImage: `linear-gradient(rgba(5, 5, 8, 0.4), rgba(5, 5, 8, 0.6)), url('./background.png')`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundAttachment: 'fixed',
+    backgroundRepeat: 'no-repeat'
+  };
+
   return (
-    <div className="min-h-screen bg-[#050508] relative font-mono selection:bg-[#ff007f] selection:text-white overflow-hidden">
+    <div 
+      className="min-h-screen relative font-mono selection:bg-[#ff007f] selection:text-white overflow-hidden"
+      style={backgroundStyle}
+    >
       <AnimatePresence mode="wait">
         
         {stage === GameStage.MOOD_INPUT && (
@@ -60,7 +72,7 @@ const App: React.FC = () => {
             </div>
             
             <div className="w-full max-w-lg space-y-8">
-              <div className="relative pixel-box p-1 group border-2 border-[#00f2ff]/20 bg-black/40">
+              <div className="relative pixel-box p-1 group border-2 border-[#00f2ff]/20 bg-black/60">
                 <textarea 
                   value={moodInput} 
                   onChange={(e) => setMoodInput(e.target.value)} 
@@ -99,7 +111,7 @@ const App: React.FC = () => {
                   key={i} 
                   whileHover={{ y: -15, borderColor: '#ff007f', boxShadow: '0 30px 60px -10px rgba(255,0,127,0.4)' }} 
                   onClick={() => { setTargetRecipe(drink); setStage(GameStage.MIXING); }} 
-                  className="pixel-box p-10 cursor-pointer group bg-[#0a0a0f] transition-all border-2"
+                  className="pixel-box p-10 cursor-pointer group bg-[#0a0a0f]/90 transition-all border-2"
                 >
                   <div className="text-[10px] text-[#ff007f] mb-8 font-black uppercase tracking-[0.3em] border-b border-[#1a1a1f] pb-3">识别码: 0x0{i+1}</div>
                   <h3 className="text-4xl font-black text-[#00f2ff] uppercase mb-6 group-hover:text-[#ff007f] transition-colors italic tracking-tighter leading-tight">{drink.name}</h3>
