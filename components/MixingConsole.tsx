@@ -60,20 +60,20 @@ const MixingConsole: React.FC<Props> = ({ targetRecipe, onFinish, onReset }) => 
 
   return (
     <div className="fixed inset-0 flex items-center justify-center p-4 bg-black/95">
-      <div className="w-full max-w-5xl h-[70vh] grid grid-cols-12 gap-4">
+      <div className="w-full max-w-6xl h-[80vh] grid grid-cols-12 gap-6 scale-95">
         
         {/* Left: Recipe Menu (Rectangle) */}
-        <div className="col-span-5 pixel-box flex flex-col p-6 bg-[#050508] border-[#1a1a1f] overflow-y-auto">
-          <div className="flex justify-between items-start mb-6 border-b border-[#333] pb-4">
+        <div className="col-span-4 pixel-box flex flex-col p-8 bg-[#050508] border-[#1a1a1f] overflow-y-auto">
+          <div className="flex justify-between items-start mb-8 border-b border-[#333] pb-6">
              <div>
-                <h2 className="text-3xl font-black text-white italic tracking-tighter uppercase">{targetRecipe.name}</h2>
-                <p className="text-[#ff007f] font-bold text-lg mt-1">$180</p>
+                <h2 className="text-4xl font-black text-white italic tracking-tighter uppercase">{targetRecipe.name}</h2>
+                <p className="text-[#ff007f] font-bold text-2xl mt-2">$180</p>
              </div>
-             <div className="text-[10px] text-[#444] font-black uppercase tracking-widest">Recipe_0x{Math.floor(Math.random()*256).toString(16)}</div>
+             <div className="text-xs text-[#444] font-black uppercase tracking-widest">Recipe_0x{Math.floor(Math.random()*256).toString(16)}</div>
           </div>
           
-          <div className="space-y-4 text-sm leading-relaxed">
-            <p className="text-[#00f2ff]/80">
+          <div className="space-y-6 text-base leading-relaxed">
+            <p className="text-[#00f2ff]/90">
               {targetRecipe.name}是由
               {Object.entries(targetRecipe.ingredients).map(([name, val], i, arr) => (
                 val > 0 && <span key={name}>
@@ -84,113 +84,119 @@ const MixingConsole: React.FC<Props> = ({ targetRecipe, onFinish, onReset }) => 
               {targetRecipe.iced ? '加冰' : ''}{targetRecipe.aged ? '陈化' : ''}，调和而成。
             </p>
             
-            <p className="text-gray-500 italic">
+            <p className="text-gray-500 italic text-sm">
               (点击“调制”按钮后请等待至摇酒壶开始剧烈晃动。)
             </p>
 
-            <p className="text-white border-l-2 border-[#ff007f] pl-4 py-2 bg-[#ff007f]/5">
+            <p className="text-white border-l-4 border-[#ff007f] pl-6 py-4 bg-[#ff007f]/5 text-lg">
               “{targetRecipe.description}”
             </p>
 
-            <div className="text-[#00f2ff] font-bold">
+            <div className="text-[#00f2ff] font-bold text-xl">
               {targetRecipe.flavorProfile}
             </div>
           </div>
 
-          <div className="mt-auto pt-6 flex justify-between items-center opacity-50">
-             <div className="w-8 h-8 flex items-center justify-center border border-[#333] cursor-pointer hover:bg-white/5">◀</div>
-             <div className="text-xs">16/24</div>
-             <div className="w-8 h-8 flex items-center justify-center border border-[#333] cursor-pointer hover:bg-white/5">▶</div>
+          <div className="mt-auto pt-8 flex justify-between items-center opacity-50">
+             <div className="w-10 h-10 flex items-center justify-center border border-[#333] cursor-pointer hover:bg-white/5">◀</div>
+             <div className="text-sm">16 / 24</div>
+             <div className="w-10 h-10 flex items-center justify-center border border-[#333] cursor-pointer hover:bg-white/5">▶</div>
           </div>
         </div>
 
         {/* Right: Mixing UI */}
-        <div className="col-span-7 grid grid-rows-6 gap-4">
+        <div className="col-span-8 grid grid-rows-6 gap-6">
           {/* Status Row */}
-          <div className="row-span-1 pixel-box flex items-center justify-between px-6 bg-[#0a0a0f]">
-             <div className="text-xs text-[#444] font-black uppercase">BTC Terminal Feed</div>
-             <div className="text-sm text-[#00f2ff] font-mono flicker">{log}</div>
+          <div className="row-span-1 pixel-box flex items-center justify-between px-8 bg-[#0a0a0f]">
+             <div className="text-xs text-[#444] font-black uppercase tracking-widest">BTC Terminal Feed</div>
+             <div className="text-xl text-[#00f2ff] font-mono flicker tracking-tighter">{log}</div>
           </div>
 
           {/* Controls Area (Ingredients + Shaker) */}
-          <div className="row-span-4 grid grid-cols-2 gap-4">
+          <div className="row-span-4 grid grid-cols-2 gap-6">
             
-            {/* Ingredients Grid (6 slots requested) */}
-            <div className="grid grid-cols-2 grid-rows-3 gap-2 p-2 bg-[#050508] pixel-box border-[#1a1a1f]">
+            {/* Ingredients Grid (6 slots) */}
+            <div className="grid grid-cols-2 grid-rows-3 gap-3 p-3 bg-[#050508] pixel-box border-[#1a1a1f]">
               {(['Adelhyde', 'Bronson Ext', 'Pwd Delta', 'Flanergide', 'Karmotrine'] as IngredientType[]).map(type => (
                 <div 
                   key={type} 
                   onClick={() => handleAddUnit(type)}
-                  className="relative group cursor-pointer flex flex-col items-center justify-center border border-[#1a1a1f] hover:border-[#ff007f] transition-colors p-2 bg-[#08080c]"
+                  className="relative group cursor-pointer flex flex-col items-center justify-center border-2 border-[#1a1a1f] transition-all p-3 bg-[#08080c] overflow-hidden"
+                  style={{ borderColor: mix.ingredients[type] > 0 ? INGREDIENTS_CONFIG[type].color + '44' : '#1a1a1f' }}
                 >
-                  <div className="w-8 h-12 relative flex flex-col justify-end overflow-hidden mb-1">
+                  {/* Subtle Background Glow */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity pointer-events-none" style={{ backgroundColor: INGREDIENTS_CONFIG[type].color }} />
+                  
+                  <div className="w-10 h-16 relative flex flex-col justify-end overflow-hidden mb-2">
                     <div className="absolute inset-0 border border-white/10"></div>
                     <div 
                       className="w-full transition-all duration-300" 
                       style={{ 
                         height: `${(mix.ingredients[type]/10)*100}%`, 
                         backgroundColor: INGREDIENTS_CONFIG[type].color,
-                        boxShadow: `0 0 10px ${INGREDIENTS_CONFIG[type].color}88`
+                        boxShadow: `0 0 15px ${INGREDIENTS_CONFIG[type].color}aa`
                       }} 
                     />
                   </div>
-                  <div className="text-[9px] font-black text-white/50 group-hover:text-white uppercase truncate w-full text-center">
+                  <div className="text-xs font-black uppercase truncate w-full text-center mb-1 group-hover:scale-110 transition-transform" style={{ color: mix.ingredients[type] > 0 ? INGREDIENTS_CONFIG[type].color : '#555' }}>
                     {INGREDIENTS_CHINESE[type]}
                   </div>
-                  <div className="flex gap-0.5 mt-1">
+                  <div className="flex gap-1">
                     {Array.from({length: 5}).map((_, i) => (
-                      <div key={i} className={`w-1 h-1 ${mix.ingredients[type] > i ? 'bg-[#ff007f]' : 'bg-[#1a1a1f]'}`} />
+                      <div key={i} className={`w-1.5 h-1.5 rounded-full transition-colors ${mix.ingredients[type] > i ? '' : 'bg-[#1a1a1f]'}`} style={{ backgroundColor: mix.ingredients[type] > i ? INGREDIENTS_CONFIG[type].color : '' }} />
                     ))}
                   </div>
                 </div>
               ))}
-              {/* Extra slot for layout/symmetry if needed, here we just use 5 */}
-              <div className="border border-[#1a1a1f] opacity-10 flex items-center justify-center text-[8px]">INV_EMPTY</div>
+              <div className="border-2 border-[#1a1a1f] opacity-20 flex flex-col items-center justify-center text-[10px] font-black bg-[#08080c]">
+                <div className="w-10 h-16 border border-white/5 mb-2 bg-black/40" />
+                INV_EMPTY
+              </div>
             </div>
 
             {/* Shaker Area */}
             <div className="pixel-box relative flex items-center justify-center bg-[#08080c] overflow-hidden">
                <motion.div 
-                animate={isShaking ? { x: [-10, 10], y: [-5, 5], rotate: [-5, 5] } : {}}
+                animate={isShaking ? { x: [-12, 12], y: [-6, 6], rotate: [-4, 4] } : {}}
                 transition={{ repeat: Infinity, duration: 0.1, ease: "linear" }}
-                className="w-44 h-64 relative z-20"
+                className="w-56 h-80 relative z-20"
               >
-                <div className="w-full h-full text-white/10 group-hover:text-cyan-500/20 transition-colors">
+                <div className="w-full h-full text-white/5">
                   <ShakerIcon />
                 </div>
                 {/* Internal Liquid Visualization */}
-                <div className="absolute inset-x-[40px] bottom-[25px] top-[25px] flex flex-col-reverse overflow-hidden rounded-b-xl">
+                <div className="absolute inset-x-[50px] bottom-[30px] top-[30px] flex flex-col-reverse overflow-hidden rounded-b-2xl">
                   {(Object.entries(mix.ingredients) as [IngredientType, number][]).map(([type, count]) => (
                     <div 
                       key={type}
                       style={{ height: `${count * 5}%`, backgroundColor: INGREDIENTS_CONFIG[type as IngredientType].color }}
-                      className="w-full transition-all duration-700 shadow-[inset_0_0_20px_rgba(0,0,0,0.5)] border-t border-white/5"
+                      className="w-full transition-all duration-700 shadow-[inset_0_0_30px_rgba(0,0,0,0.6)] border-t border-white/10"
                     />
                   ))}
                 </div>
               </motion.div>
               
               {/* Load Meter */}
-              <div className="absolute bottom-4 right-4 text-right">
-                <div className="text-[10px] text-[#444] font-black">LOAD_LEVEL</div>
-                <div className={`text-4xl font-mono font-black ${totalUnits > 20 ? 'text-red-600 flicker' : 'text-[#00f2ff]'}`}>
-                  {totalUnits.toString().padStart(2, '0')}<span className="text-sm opacity-20">/20</span>
+              <div className="absolute bottom-6 right-8 text-right">
+                <div className="text-xs text-[#444] font-black tracking-widest mb-1">LOAD_LEVEL</div>
+                <div className={`text-6xl font-mono font-black italic ${totalUnits > 20 ? 'text-red-600 flicker' : 'text-[#00f2ff]'}`}>
+                  {totalUnits.toString().padStart(2, '0')}<span className="text-xl opacity-20">/20</span>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Action Footer */}
-          <div className="row-span-1 grid grid-cols-4 gap-2">
+          <div className="row-span-1 grid grid-cols-4 gap-4">
             <button 
               onClick={() => { setMix(p => ({...p, iced: !p.iced})); setLog(mix.iced ? '取消：加冰' : '设定：加冰'); }}
-              className={`pixel-box border-2 font-black text-xs uppercase tracking-widest transition-all ${mix.iced ? 'border-[#00f2ff] text-[#00f2ff] bg-[#00f2ff]/10' : 'border-[#1a1a1f] text-gray-600'}`}
+              className={`pixel-box border-4 font-black text-sm uppercase tracking-widest transition-all ${mix.iced ? 'border-[#00f2ff] text-[#00f2ff] bg-[#00f2ff]/10 shadow-[0_0_20px_#00f2ff33]' : 'border-[#1a1a1f] text-gray-700'}`}
             >
               [ 加冰 ]
             </button>
             <button 
               onClick={() => { setMix(p => ({...p, aged: !p.aged})); setLog(mix.aged ? '取消：陈化' : '设定：陈化'); }}
-              className={`pixel-box border-2 font-black text-xs uppercase tracking-widest transition-all ${mix.aged ? 'border-[#ff007f] text-[#ff007f] bg-[#ff007f]/10' : 'border-[#1a1a1f] text-gray-600'}`}
+              className={`pixel-box border-4 font-black text-sm uppercase tracking-widest transition-all ${mix.aged ? 'border-[#ff007f] text-[#ff007f] bg-[#ff007f]/10 shadow-[0_0_20px_#ff007f33]' : 'border-[#1a1a1f] text-gray-700'}`}
             >
               [ 陈化 ]
             </button>
@@ -199,14 +205,14 @@ const MixingConsole: React.FC<Props> = ({ targetRecipe, onFinish, onReset }) => 
                 setMix({ ingredients: { 'Adelhyde': 0, 'Bronson Ext': 0, 'Pwd Delta': 0, 'Flanergide': 0, 'Karmotrine': 0 }, iced: false, aged: false }); 
                 setLog('系统：重置中');
               }}
-              className="pixel-box border-[#ff9500] text-[#ff9500] bg-[#ff9500]/5 font-black text-xs uppercase tracking-widest hover:bg-[#ff9500]/20"
+              className="pixel-box border-4 border-[#ff9500]/50 text-[#ff9500] bg-[#ff9500]/5 font-black text-sm uppercase tracking-widest hover:bg-[#ff9500]/20 transition-all"
             >
               重做
             </button>
             <button 
               onClick={handleMix}
               disabled={isShaking || totalUnits === 0}
-              className="pixel-box bg-[#ff007f] text-white font-black text-xl uppercase tracking-widest shadow-[0_0_30px_#ff007f66] hover:scale-105 active:scale-95 disabled:opacity-50 disabled:scale-100"
+              className="pixel-box bg-[#ff007f] text-white font-black text-2xl uppercase tracking-widest shadow-[0_0_40px_#ff007f66] hover:scale-105 active:scale-95 disabled:opacity-30 disabled:scale-100 transition-all flicker"
             >
               调制
             </button>
