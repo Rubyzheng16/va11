@@ -1,0 +1,5 @@
+{
+  "name": "VA-11 Mood-A Bartender",
+  "description": "An interactive cyberpunk bartending simulator inspired by VA-11 HALL-A. Drag and drop ingredients based on your current mood.",
+  "requestFramePermissions": []
+}
